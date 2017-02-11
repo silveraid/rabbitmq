@@ -1,4 +1,4 @@
-FROM rabbitmq:alpine
+FROM silveraid/rabbitmq-cluster:latest
 
 RUN rabbitmq-plugins enable --offline rabbitmq_management
 
