@@ -223,7 +223,7 @@ if [ "$1" = 'rabbitmq-server' ] && [ "$haveConfig" ]; then
 		done
 
 		clusterConfig="{ cluster_nodes, {$(rabbit_array "${nodeNames[@]}"), disc} }"
-		rabbitConfig+=(clusterConfig)
+		rabbitConfig+=(${clusterConfig})
 	fi
 
 	if [ "$haveSslConfig" ]; then
