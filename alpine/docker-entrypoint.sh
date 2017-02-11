@@ -212,6 +212,20 @@ if [ "$1" = 'rabbitmq-server' ] && [ "$haveConfig" ]; then
 		"{ loopback_users, $(rabbit_array) }"
 	)
 
+	# If cluster nodes have been defined generate config for them
+	if [ "$(compgen -v | grep -c RABBITMQ_NODE_)" ]; then
+
+		nodeNames=()
+
+		for var in $(compgen -v | grep RABBITMQ_NODE_); do
+
+			nodeNames+=(rabbit@${!var})
+		done
+
+		clusterConfig="{ cluster_nodes, {$(rabbit_array "${nodeNames[@]}"), disc} }"
+		rabbitConfig+=(clusterConfig)
+	fi
+
 	if [ "$haveSslConfig" ]; then
 		IFS=$'\n'
 		rabbitSslOptions=( $(rabbit_env_config 'ssl' "${sslConfigKeys[@]}") )
